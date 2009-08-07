@@ -46,7 +46,7 @@ class RepositoriesTask extends ImprovedCakeShell {
 		$this->formattedOut(String::insert(__d('plugin', '[fg=red]Excluindo[/fg] repositorio [u]:rep_url[/u] [/fg]', true), array('rep_url' =>  $url)), false);
 
 		if (empty($url)) {
-			$url = $this->_select();
+			$url = $this->_select(__d('plugin', 'Selecione um Repositorio para remover', true));
 		}
 
 		if (!$this->_exists($url)) {
@@ -70,7 +70,7 @@ class RepositoriesTask extends ImprovedCakeShell {
  */
 	function plugins($url = null, $proxy = false) {
 		while (empty($url)) {
-			$url = $this->_select();
+			$url = $this->_select(__d('plugin', 'Selecione um Repositorio para listar os plugins', true));
 		}
 		$this->_show($url, $proxy);
 	}
@@ -171,13 +171,13 @@ class RepositoriesTask extends ImprovedCakeShell {
 		return true;
 	}
 
-	function _select() {
+	function _select($prompt) {
 		if (empty($this->repositories)) {
 			$this->formattedOut(__d('plugin', "Nao existem repositorios para serem listados\n", true));
 			$this->stop();
 		}
 
-		$this->formattedOut(__d('plugin', 'Selecione um Repositorio para remover', true));
+		$this->formattedOut($prompt);
 		$this->out('');
 
 		foreach ($this->repositories as $key => $repository) {
