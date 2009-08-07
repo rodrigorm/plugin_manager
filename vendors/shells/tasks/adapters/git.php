@@ -38,7 +38,7 @@ class GitTask extends ImprovedCakeShell {
  * Verificar se o git está instalado e funcionando
  */
 	function _isSupported() {
-		if (!shell_exec('git --version 2>/dev/null')) {
+		if (!$this->_exec('git --version 2>/dev/null', false)) {
 			$this->formattedOut(__d('plugin', "[bg=red][fg=black] ERRO : GIT não suportado [/fg][/bg]\n", true));
 			$this->_stop();
 		}
@@ -48,16 +48,16 @@ class GitTask extends ImprovedCakeShell {
  * Verificar se existe a pasta APP/.git
  */
 	function _dotGitPathExists() {
-		return file_exists($this->params['working'] . '.git/');
+		return file_exists($this->params['working'] . DS . '.git' . DS);
 	}
 
 /**
  * Instala o plugin através do git clone
  */
 	function _clone($url, $pluginPath) {
-		$return = shell_exec('git clone ' . $url . ' ' . $pluginPath . ' 2>&1');
+		$return = $this->_exec('git clone ' . $url . ' ' . $pluginPath);
 
-		$pattern = "/.*fatal.*/i";
+		$pattern = "/.*fatal.*/im";
 		$found = null;
 
 		if (!preg_match_all($pattern, $return, $found)) {
@@ -72,14 +72,14 @@ class GitTask extends ImprovedCakeShell {
  */
 	function _submodule($url, $pluginPath) {
 		$moduleLocation = str_replace($this->params['working'], '', $pluginPath);
-		$return = shell_exec('git submodule add ' . $_url . ' ' . $moduleLocation . ' 2>&1');
+		$return = $this->_exec('git submodule add ' . $url . ' ' . $moduleLocation);
 
-		$pattern = "/.*fatal.*/i";
+		$pattern = "/.*fatal.*/im";
 		$found = array();
 		preg_match_all($pattern, $return, $found);
 
-		if( empty($found[0])) {
-			shell_exec('git submodule init && git submodule update');
+		if(empty($found[0])) {
+			$this->_exec('git submodule init && git submodule update', false);
 		}
 
 		return $found[0];
@@ -91,9 +91,18 @@ class GitTask extends ImprovedCakeShell {
 	function _excludeGitFolder($pluginPath) {
 		App::import('Folder');
 
-		$gitFolder = $pluginPath . '/.git/';
+		$gitFolder = $pluginPath . DS . '.git' . DS;
 		$folder    = new Folder($gitFolder, false);
 		$folder->delete($gitFolder);
+	}
+
+	function _exec($cmd, $stdErr = true) {
+		$suffix = '';
+		if ($stdErr) {
+			$suffix = ' 2>&1';
+		}
+		
+		return shell_exec($cmd . $suffix);
 	}
 }
 ?>
