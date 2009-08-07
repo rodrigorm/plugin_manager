@@ -37,7 +37,7 @@ class SvnTask extends ImprovedCakeShell {
  * Verificar se o SVN está instalado e funcionando
  */
 	function _isSupported() {
-		if (!shell_exec('svn --version 2>/dev/null')) {
+		if (!$this->_exec('svn --version 2>/dev/null', false)) {
 			$this->formattedOut(__d('plugin', "[bg=red][fg=black] ERRO : SVN não suportado [/fg][/bg]\n", true));
 			$this->_stop();
 		}
@@ -47,14 +47,14 @@ class SvnTask extends ImprovedCakeShell {
  * Verificar se existe a pasta APP/.svn
  */
 	function _dotSvnPathExists() {
-		return file_exists($this->params['working'] . '.svn/');
+		return file_exists($this->params['working'] . DS . '.svn' . DS);
 	}
 
 /**
  * Instala o plugin através do svn export
  */
 	function _export($url, $pluginPath) {
-		$return = shell_exec('svn export ' . $url . ' ' . $pluginPath . ' 2>&1');
+		$return = $this->_exec('svn export ' . $url . ' ' . $pluginPath);
 
 		$pattern = "/^svn\:.*/i";
 		$found = null;
@@ -66,15 +66,15 @@ class SvnTask extends ImprovedCakeShell {
 /**
  * Instala o plugin através do svn eternals
  */
-	function _externals($url, $pluginPath) {
-		$this->out('');
+	function _externals($url, $pluginPath, $name) {
+		$this->formattedOut('');
 
 		$externals = $this->_getExternals();
 		$externals .= "\nplugins" . DS . $name . ' ' . $url;
 
 		if (file_put_contents('.externals-tmp', $externals) !== false) {
-			$return = shell_exec('svn propset -q svn:externals . -F .externals-tmp 2>&1');
-			shell_exec('svn update');
+			$this->_exec('svn propset -q svn:externals . -F .externals-tmp');
+			$return = $this->_exec('svn update', false);
 			unlink('.externals-tmp');
 		}
 
@@ -86,7 +86,16 @@ class SvnTask extends ImprovedCakeShell {
 	}
 
 	function _getExternals() {
-		return trim(shell_exec('svn propget svn:externals .'));
+		return trim($this->_exec('svn propget svn:externals .', false));
+	}
+
+	function _exec($cmd, $stdErr = true) {
+		$suffix = '';
+		if ($stdErr) {
+			$suffix = ' 2>&1';
+		}
+		
+		return shell_exec($cmd . $suffix);
 	}
 }
 ?>
