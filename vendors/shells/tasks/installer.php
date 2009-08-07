@@ -64,9 +64,10 @@ class InstallerTask extends ImprovedCakeShell {
  */
 	function _runInstallHook($plugin) {
 		//TODO: Executar usando o próprio console do Cake
+		//TODO: Configurar para ler o hook de vendors/shells/tasks, evitando assim que esse shell apareça no comando `cake`
 		$this->formattedOut(__d('plugin', "  -> verificando a existencia do hook de instalacao...", true));
 
-		$installer = APP . 'plugins/' . $plugin . '/vendors/shells/' . $plugin . '_installer.php';
+		$installer = $this->params['working'] . DS . 'plugins' . DS . $plugin . DS . 'vendors' . DS . 'shells' . DS . $plugin . '_installer.php';
 		if (file_exists($installer)) {
 			$this->formattedOut(__d('plugin', "    - carregando... ", true), false);
 			$className = Inflector::camelize($plugin . '_installer');
@@ -78,7 +79,6 @@ class InstallerTask extends ImprovedCakeShell {
 			$this->formattedOut(__d('plugin',"[fg=black][bg=green]  OK  [/bg][/fg]\n  -> executando hook de instalação...", true));
 			$installer = new $className($this);
 
-			$installer->startup();
 			$installer->_installDeps();
 
 			if (method_exists($installer, 'install')) {
