@@ -106,7 +106,7 @@ class SvnTaskTestCase extends CakeTestCase {
 
 	function testExport() {
 		$url = 'svn://example.com/user/example';
-		$pluginPath = 'app/plugins/example';
+		$pluginPath = 'plugins/example';
 		$output = "A    example/example_app_controller.php\n" .
 		"A    example/example_app_model.php\n" .
 		"A    example/models/example.php\n" .
@@ -122,7 +122,7 @@ class SvnTaskTestCase extends CakeTestCase {
 
 	function testExportFails() {
 		$url = 'svn://example.com/user/example';
-		$pluginPath = 'app/plugins/example';
+		$pluginPath = 'plugins/example';
 		$output = "svn: URL '" . $url . "' doesn't exist\n";
 
 		$this->SvnTask->setReturnValue('_exec', $output);
@@ -134,7 +134,7 @@ class SvnTaskTestCase extends CakeTestCase {
 
 	function testExternals() {
 		$url = 'svn://example.com/user/example';
-		$pluginPath = 'app/plugins/example';
+		$pluginPath = 'plugins/example';
 		$name = 'example';
 
 		$this->SvnTask->setReturnValue('_exec', '', array('svn propget svn:externals .', false));
@@ -155,7 +155,7 @@ class SvnTaskTestCase extends CakeTestCase {
 	
 	function testExternalsFails() {
 		$url = 'svn://example.com/user/example';
-		$pluginPath = 'app/plugins/example';
+		$pluginPath = 'plugins/example';
 		$name = 'example';
 
 		$this->SvnTask->setReturnValue('_exec', '', array('svn propget svn:externals .', false));

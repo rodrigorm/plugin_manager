@@ -93,7 +93,7 @@ class GitTaskTestCase extends CakeTestCase {
 
 	function testClone() {
 		$url = 'git://example.com/user/example.git';
-		$pluginPath = 'app/plugins/example';
+		$pluginPath = 'plugins/example';
 		$output = "Initialized empty Git repository in " . TEST_APP . DS . $pluginPath . DS . ".git/\n" . 
 		"remote: Counting objects: 413, done.\n" . 
 		"remote: Compressing objects: 100% (293/293), done.\n" . 
@@ -126,7 +126,7 @@ class GitTaskTestCase extends CakeTestCase {
 
 	function testSubmodule() {
 		$url = 'git://example.com/user/example.git';
-		$pluginPath = 'app/plugins/example';
+		$pluginPath = 'plugins/example';
 		$output = "Initialized empty Git repository in " . TEST_APP . DS . $pluginPath . DS . ".git/\n" . 
 		"remote: Counting objects: 413, done.\n" . 
 		"remote: Compressing objects: 100% (293/293), done.\n" . 
@@ -179,7 +179,7 @@ class GitTaskTestCase extends CakeTestCase {
 		$this->GitTask->setReturnValueAt(0, '_exec', 'git version 1.6.3.2', $gitVersionParams);
 
 		$gitCloneParams = array('git clone ' . $url . ' ' . $pluginPath);
-		$output = "Initialized empty Git repository in " . TEST_APP . DS . $pluginPath . DS . ".git/\n" . 
+		$output = "Initialized empty Git repository in " . $pluginPath . DS . ".git/\n" . 
 		"remote: Counting objects: 413, done.\n" . 
 		"remote: Compressing objects: 100% (293/293), done.\n" . 
 		"remote: Total 413 (delta 206), reused 118 (delta 59)\n" . 
