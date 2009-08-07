@@ -13,10 +13,10 @@ class RepositoriesTask extends ImprovedCakeShell {
 		$this->_parser();
 	}
 
-	/**
-	 * Adiciona um novo repositório se ele já não estiver na lista
-	 */
-	//TODO: Adicionar uma parametro $name ao repositorio para fácil acesso e identificacao
+/**
+ * Adiciona um novo repositório se ele já não estiver na lista
+ */
+//TODO: Adicionar uma parametro $name ao repositorio para fácil acesso e identificacao
 	function add($url) {
 		$this->formattedOut(String::insert(__d('plugin', 'Inserindo repositorio [u]:rep_url[/u] [/fg]', true), array('rep_url'=> $url)), false);
 
@@ -39,9 +39,9 @@ class RepositoriesTask extends ImprovedCakeShell {
 		}
 	}
 
-	/**
-	 * Remove um repositorio do arquivo .reps
-	 */
+/**
+ * Remove um repositorio do arquivo .reps
+ */
 	function remove($url = null) {
 		$this->formattedOut(String::insert(__d('plugin', '[fg=red]Excluindo[/fg] repositorio [u]:rep_url[/u] [/fg]', true), array('rep_url' =>  $url)), false);
 
@@ -65,9 +65,9 @@ class RepositoriesTask extends ImprovedCakeShell {
 		}
 	}
 
-	/**
-	 * Lista todos os plugins de um repositorio
-	 */
+/**
+ * Lista todos os plugins de um repositorio
+ */
 	function plugins($url = null, $proxy = false) {
 		while (empty($url)) {
 			$url = $this->_select();
@@ -102,9 +102,9 @@ class RepositoriesTask extends ImprovedCakeShell {
 		$this->formattedOut(__d('plugin', '* Plugins ja instalados', true));
 	}
 
-	/**
-	 * Retorna todos os plugins encontrados através do $pattern
-	 */
+/**
+ * Retorna todos os plugins encontrados através do $pattern
+ */
 	function _find($pattern, $proxy = false) {
 		$allPlugins = $this->_plugins();
 		if (empty($allPlugins)) {
@@ -119,9 +119,9 @@ class RepositoriesTask extends ImprovedCakeShell {
 		return $plugins;
 	}
 
-	/**
-	 * Carrega a lista de repositorios do arquivo
-	 */
+/**
+ * Carrega a lista de repositorios do arquivo
+ */
 	function _parser() {
 		if (!file_exists($this->path)) {
 			//TODO: Ao invés de mostrar um erro, cria um novo arquivo com o repositorio padrão
@@ -141,17 +141,17 @@ class RepositoriesTask extends ImprovedCakeShell {
 		}
 	}
 
-	/**
-	 * Verificar se a url do repositório é uma url válida
-	 */
+/**
+ * Verificar se a url do repositório é uma url válida
+ */
 	function _isHttp($url) {
 		$pattern = "(http?://([-\w\.]+)+(:\d+)?(/([\w/_\.]*(\?\S+)?)?)?)";
 		return preg_match($pattern, $url);
 	}
 
-	/**
-	 * Localiza uma url na lista de repositorios
-	 */
+/**
+ * Localiza uma url na lista de repositorios
+ */
 	function _exists($url) {
 		if (array_search($url, $this->repositories) === false) {
 			return false;
@@ -159,9 +159,9 @@ class RepositoriesTask extends ImprovedCakeShell {
 		return true;
 	}
 
-	/**
-	 * Salva a lista de repositorios no arquivo .reps
-	 */
+/**
+ * Salva a lista de repositorios no arquivo .reps
+ */
 	function _save() {
 		$contents = implode("\n", $this->repositories);
 		if (file_put_contents($this->path, $contents) === false) {
@@ -199,9 +199,9 @@ class RepositoriesTask extends ImprovedCakeShell {
 		return false;
 	}
 
-	/**
-	 * Mostra o conteúdo de um repositório
-	 */
+/**
+ * Mostra o conteúdo de um repositório
+ */
 	function _show($url, $proxy = false) {
 		$this->formattedOut(String::insert(__d('plugin', "Listando plugins disponiveis em [u]:rep_url[/u]\n", true), array('rep_url' => $url)));
 
@@ -223,9 +223,9 @@ class RepositoriesTask extends ImprovedCakeShell {
 		}
 	}
 
-	/**
-	 * Retorna um array com os plugins do repositorio
-	 */
+/**
+ * Retorna um array com os plugins do repositorio
+ */
 	function _plugins($url = null, $proxy = false) {
 		if (empty($url)) {
 			$url = $this->repositories;
@@ -258,9 +258,9 @@ class RepositoriesTask extends ImprovedCakeShell {
 		return $plugins;
 	}
 
-	/**
-	 * Pega o conteúdo html do repositorio usando o Curl
-	 */
+/**
+ * Pega o conteúdo html do repositorio usando o Curl
+ */
 	function _html($url, $proxy = false) {
 		if (!function_exists('curl_init')) {
 			$this->formattedOut(__d('plugin', "\nA biblioteca [fg=black][bg=red]PHP CURL[/bg][/fg] nao esta habilitada.\nDescomente a linha com o conteudo\n[fg=red]  - [u]extension=php_curl.so[/u][/fg] ou\n[fg=red]  - [u]extension=php_curl.dll[/u][/fg]\nno php.ini\n", true));
@@ -296,9 +296,9 @@ class RepositoriesTask extends ImprovedCakeShell {
 		return $content;
 	}
 
-	/**
-	 * Finaliza a execução do script em caso de erro no HTTP
-	 */
+/**
+ * Finaliza a execução do script em caso de erro no HTTP
+ */
 	function _validateHttpErrors($text) {
 		if (!preg_match("/HTTP.* [2][0][0-6]/i", $text)) {
 			$error = array();

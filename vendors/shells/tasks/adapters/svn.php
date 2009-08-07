@@ -11,13 +11,12 @@ class SvnTask extends ImprovedCakeShell {
 		$return = true;
 		if ($this->_dotSvnPathExists()) {
 			$output = __d('plugin', '  -> adicionando svn:external... ', true);
-
 			$errors = $this->_externals($url, $pluginPath, $name);
 		} else {
 			$output = __d('plugin', '  -> importando repositorio... ', true);
-
 			$errors = $this->_export($url, $pluginPath);
 		}
+
 		if (!empty($errors)) {
 			$return = false;
 		}
@@ -34,9 +33,9 @@ class SvnTask extends ImprovedCakeShell {
 		return $return;
 	}
 
-	/**
-	 * Verificar se o SVN está instalado e funcionando
-	 */
+/**
+ * Verificar se o SVN está instalado e funcionando
+ */
 	function _isSupported() {
 		if (!shell_exec('svn --version 2>/dev/null')) {
 			$this->formattedOut(__d('plugin', "[bg=red][fg=black] ERRO : SVN não suportado [/fg][/bg]\n", true));
@@ -44,16 +43,16 @@ class SvnTask extends ImprovedCakeShell {
 		}
 	}
 
-	/**
-	 * Verificar se existe a pasta APP/.svn
-	 */
-    function _dotSvnPathExists() {
-        return file_exists($this->params['working'] . '.svn/');
-    }
+/**
+ * Verificar se existe a pasta APP/.svn
+ */
+	function _dotSvnPathExists() {
+		return file_exists($this->params['working'] . '.svn/');
+	}
 
-	/**
-	 * Instala o plugin através do svn export
-	 */
+/**
+ * Instala o plugin através do svn export
+ */
 	function _export($url, $pluginPath) {
 		$return = shell_exec('svn export ' . $url . ' ' . $pluginPath . ' 2>&1');
 
@@ -64,9 +63,9 @@ class SvnTask extends ImprovedCakeShell {
 		return $found[0];
 	}
 
-	/**
-	 * Instala o plugin através do svn eternals
-	 */
+/**
+ * Instala o plugin através do svn eternals
+ */
 	function _externals($url, $pluginPath) {
 		$this->out('');
 

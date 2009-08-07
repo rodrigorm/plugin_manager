@@ -3,9 +3,10 @@ App::import('Plugins', 'ImprovedCakeShell.ImprovedCakeShell');
 
 class PluginsTask extends ImprovedCakeShell {
 	var $tasks = array('Repositories', 'Installer');
-	/**
-	 * Lista todos os plugins instalados
-	 */
+
+/**
+ * Lista todos os plugins instalados
+ */
 	function listAll() {
 		$this->formattedOut(String::insert(__d('plugin', "Listando plugins instalados em [u]:app[/u]:\n", true), array('app'=> $this->params['working'])));
 
@@ -26,9 +27,9 @@ class PluginsTask extends ImprovedCakeShell {
 		$this->formattedOut(__d('plugin', '* Plugins que podem ser atualizados utilizando o [u]Plugin Manager[/u]', true));
 	}
 
-	/**
-	 * Instala um plugin a partir de uma url de repositório
-	 */
+/**
+ * Instala um plugin a partir de uma url de repositório
+ */
 	function install($url, $name = null) {
 		$params = $this->_extractParams($url, $name);
 
@@ -50,9 +51,9 @@ class PluginsTask extends ImprovedCakeShell {
 		return $this->Installer->install($params['url'], $params['name']);
 	}
 
-	/**
-	 * Remove um plugin instalado
-	 */
+/**
+ * Remove um plugin instalado
+ */
 	function uninstall($plugin) {
 		$this->formattedOut(String::insert(__d('plugin', "Tem certeza que deseja remover [fg=yellow]:plugin[/fg]?", true), array('plugin' => $plugin)));
 		$this->formattedOut(__d('plugin', "[fg=green](Y)[/fg] Sim\n[fg=red](N)[/fg] Nao\n", true));
@@ -115,9 +116,9 @@ class PluginsTask extends ImprovedCakeShell {
 		}
 	}
 
-	/**
-	 * Lista todas as dependências de um plugin
-	 */
+/**
+ * Lista todas as dependências de um plugin
+ */
 	function _getDependencies($plugin) {
 		$installer = $this->params['working'] . DS . 'plugins/' . $plugin . '/vendors/shells/' . $plugin . '_installer.php';
 		if (file_exists($installer)) {
@@ -130,9 +131,9 @@ class PluginsTask extends ImprovedCakeShell {
 		return null;
 	}
 
-	/**
-	 * Remove as dependências de um plugin
-	 */
+/**
+ * Remove as dependências de um plugin
+ */
 	function _removeDependencies($dependencies, $step) {
 		$folder = new Folder();
 		$opt = 'y';
@@ -152,9 +153,9 @@ class PluginsTask extends ImprovedCakeShell {
 		}
 	}
 
-	/**
-	 * Retorna um array com todos os plugins instalados
-	 */
+/**
+ * Retorna um array com todos os plugins instalados
+ */
 	function _list() {
 		$Folder = new Folder($this->params['working'] . DS . 'plugins');
 		$listPluginsFolder = $Folder->ls();
@@ -162,9 +163,9 @@ class PluginsTask extends ImprovedCakeShell {
 		return $listPluginsFolder[0];
 	}
 
-	/**
-	 * Retorna a url do repositório para um determinado plugin.
-	 */
+/**
+ * Retorna a url do repositório para um determinado plugin.
+ */
 	function _url($plugin) {
 		$urlPluginPath = $this->params['working'] . DS . 'plugins' . DS . $plugin . DS . '.url';
 		if (!file_exists($urlPluginPath)) {
@@ -175,18 +176,18 @@ class PluginsTask extends ImprovedCakeShell {
 		return trim($url);
 	}
 
-	/**
-	 * Testa se $string é uma url de repositório válida
-	 */
+/**
+ * Testa se $string é uma url de repositório válida
+ */
 	function _isUrl($url) {
 		$prefix = array('git', 'svn', 'http', 'https', 'ssh', 'file');
 		$pattern = '/^(' . implode('|', $prefix) . '):\/\//';
 		return preg_match($pattern, $url);
 	}
 
-	/**
-	 * Extrai os parâmetros necessários para a instalação do plugin
-	 */
+/**
+ * Extrai os parâmetros necessários para a instalação do plugin
+ */
 	function _extractParams($url, $name = null) {
 		if (!$this->_isUrl($url)) {
 			$plugins = $this->Repositories->_find($url, @$this->params['proxy']);

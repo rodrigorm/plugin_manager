@@ -25,9 +25,9 @@ class InstallerTask extends ImprovedCakeShell {
 		return false;
 	}
 
-	/**
-	 * Cria a pasta dentro de APP/plugins
-	 */
+/**
+ * Cria a pasta dentro de APP/plugins
+ */
 	function _create($name) {
 		App::import('Folder');
 
@@ -37,9 +37,9 @@ class InstallerTask extends ImprovedCakeShell {
 		return file_exists($folder->path) && is_dir($folder->path);
 	}
 
-	/**
-	 * Instala o plugin, deverá ser sobreescrevida pelo instalador
-	 */
+/**
+ * Instala o plugin, deverá ser sobreescrevida pelo instalador
+ */
 	function _install($url, $path, $name) {
         $this->formattedOut(__d('plugin', '  -> selecionando modo de instalacao: ', true), false);
 
@@ -49,9 +49,9 @@ class InstallerTask extends ImprovedCakeShell {
 		return $status;
 	}
 
-	/**
-	 * Cria um arquivo .url na pasta do plugin com a url do repositório para posterior atualização do mesmo.
-	 */
+/**
+ * Cria um arquivo .url na pasta do plugin com a url do repositório para posterior atualização do mesmo.
+ */
 	function _createUrlFile($url, $path) {
 		$file = $path . DS . '.url';
 		if (!file_exists($file)) {
@@ -59,9 +59,9 @@ class InstallerTask extends ImprovedCakeShell {
 		}
 	}
 
-	/**
-	 * Executa o instalador do plugin caso ele exista
-	 */
+/**
+ * Executa o instalador do plugin caso ele exista
+ */
 	function _runInstallHook($plugin) {
 		//TODO: Executar usando o próprio console do Cake
 		$this->formattedOut(__d('plugin', "  -> verificando a existencia do hook de instalacao...", true));
