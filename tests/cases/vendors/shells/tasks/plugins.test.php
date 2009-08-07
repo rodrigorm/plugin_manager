@@ -1,8 +1,22 @@
 <?php
-App::import('Vendors', 'PluginManager.PluginsTask', array('file' => 'shells/tasks/plugins.php'));
+App::import('Core', 'Shell');
+
+if (!defined('DISABLE_AUTO_DISPATCH')) {
+	define('DISABLE_AUTO_DISPATCH', true);
+}
+
+if (!class_exists('ShellDispatcher')) {
+	ob_start();
+	$argv = false;
+	require CAKE . 'console' .  DS . 'cake.php';
+	ob_end_clean();
+}
+
+App::import('Vendors', 'PluginManager.PluginsTask', array('file' => 'shells' . DS . 'tasks' . DS . 'plugins.php'));
 
 Mock::generate('ShellDispatcher');
 Mock::generate('Shell', 'InstallerTask');
+Mock::generate('Shell', 'RepositoriesTask');
 
 define('TEST_APP_ROOT', dirname(dirname(dirname(dirname(dirname(__FILE__))))));
 define('TEST_APP', TEST_APP_ROOT . DS . 'test_app');
@@ -25,7 +39,6 @@ class PluginsTaskTestCase extends CakeTestCase {
 
 	function testList() {
 		$result = $this->PluginsTask->_list();
-		debug($result);
 		$expected = array('one', 'three', 'two');
 		$this->assertEqual($result, $expected);
 	}
